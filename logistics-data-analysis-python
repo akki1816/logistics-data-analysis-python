@@ -1,0 +1,33 @@
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load logistics sales data
+
+data = pd.read_excel("Online Retail.xlsx")
+
+# Clean the dataset
+data = data.dropna(subset=["InvoiceDate", "StockCode", "Quantity"])
+data = data[data["Quantity"] > 0]
+
+# Calculate product demand
+demand = data.groupby("StockCode")["Quantity"].sum()
+
+print("Total Products:", len(demand))
+print("Total Demand:", demand.sum())
+
+# Identify top 10 products
+top_products = demand.sort_values(ascending=False).head(10)
+
+print("\nTop 10 Products:")
+print(top_products)
+
+# Display demand chart
+top_products.plot(kind="bar", title="Top 10 Products by Demand")
+plt.xlabel("Product")
+plt.ylabel("Quantity")
+plt.tight_layout()
+plt.show()
+
+print("\nLogistics Analysis Completed!")
